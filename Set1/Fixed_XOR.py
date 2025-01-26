@@ -50,13 +50,16 @@ def xor(hex_string_1, hex_string_2):
 
 def main():
     if len(sys.argv) != 3:
-        print(f"Correct format: python {sys.argv[0]} <first hex> <second hex>")
-        exit()
+        # print(f"Correct format: python {sys.argv[0]} <first hex> <second hex>")
+        hex_string_1 = "1c0111001f010100061a024b53535009181c"
+        hex_string_2 = "686974207468652062756c6c277320657965"
+    else:
+        hex_string_1 = sys.argv[1]
+        hex_string_2 = sys.argv[2]
 
-    hex_string_1 = sys.argv[1]
-    hex_string_2 = sys.argv[2]
     ans = xor(hex_string_1, hex_string_2)
     print(ans)
+
 
 if __name__ == '__main__':
     main()

@@ -41,10 +41,14 @@ def find_best_key_and_plaintext(cipher_bytes):
 
 
 def main():
-    if len(sys.argv) != 2:
+    if len(sys.argv) == 1:
+        ciphertext = "1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736"
+    elif len(sys.argv) != 2:
         print(f"Correct format: python {sys.argv[0]} <ciphertext>")
         exit()
-    ciphertext = sys.argv[1]
+        ciphertext = 0
+    else:
+        ciphertext = sys.argv[1]
     # Decode the hex string into bytes
     cipher_bytes = bytes.fromhex(ciphertext)
 

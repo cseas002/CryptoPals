@@ -1,0 +1,1 @@
+openssl enc -aes-128-ecb -d -in AES-base64-encrypted-file.txt -base64 -K $(echo -n "YELLOW SUBMARINE" | xxd -p)

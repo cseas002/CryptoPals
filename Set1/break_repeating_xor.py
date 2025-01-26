@@ -114,12 +114,17 @@ def decrypt_repeating_key_xor(ciphertext):
 
 
 def main():
-    if len(sys.argv) != 2:
+    if len(sys.argv) == 1:
+        filename = "break-repeating-xor-file.txt"
+    elif len(sys.argv) != 2:
         print(f"Correct format: python {sys.argv[0]} <base64_encoded_file>")
         exit()
+        filename = ""
+    else:
+        filename = sys.argv[1]
 
     # Read and decode the base64 file
-    with open(sys.argv[1], 'r') as f:
+    with open(filename, 'r') as f:
         ciphertext = base64.b64decode(f.read().strip())
 
     # Decrypt the ciphertext
@@ -128,7 +133,6 @@ def main():
     # Print the results
     print(f"Key: {key}")
     print(f"Decrypted Message: {plaintext}")
-
 
 
 if __name__ == '__main__':

@@ -60,13 +60,15 @@ def hex_to_base_64(hex_string):
 
 # Main function to handle command-line arguments and execute the conversion
 def main():
+    if len(sys.argv) == 1:
+        hex_string = "49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d"
     # Check if the correct number of arguments is provided
-    if len(sys.argv) != 2:
+    elif len(sys.argv) != 2:
         print(f"Correct format: python {sys.argv[0]} <hex to be converted to base64>")
         exit()
-
-    # Get the hex string from command-line arguments
-    hex_string = sys.argv[1]
+        hex_string = ""
+    else:
+        hex_string = sys.argv[1]
 
     # Perform the hex-to-Base64 conversion
     base_64_string = hex_to_base_64(hex_string)

@@ -15,13 +15,17 @@ def repeating_key_xor(plaintext, key):
 
 
 def main():
-    if len(sys.argv) != 3:
+    if len(sys.argv) == 1:
+        plaintext = "Burning 'em, if you ain't quick and nimble I go crazy when I hear a cymbal".encode()
+        key = "ICE".encode()
+    elif len(sys.argv) != 3:
         print(f"Correct format: python {sys.argv[0]} <plaintext> <key>")
         exit()
-
-    # Read plaintext and key from command-line arguments
-    plaintext = sys.argv[1].encode()  # Convert plaintext to bytes
-    key = sys.argv[2].encode()  # Convert key to bytes
+        plaintext, key = 0, 0
+    else:
+        # Read plaintext and key from command-line arguments
+        plaintext = sys.argv[1].encode()  # Convert plaintext to bytes
+        key = sys.argv[2].encode()  # Convert key to bytes
 
     # Perform encryption
     ciphertext = repeating_key_xor(plaintext, key)

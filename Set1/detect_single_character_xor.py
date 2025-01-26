@@ -42,12 +42,16 @@ def find_encrypted_line(lines):
 
 
 def main():
-    if len(sys.argv) != 2:
+    if len(sys.argv) == 1:
+        filename = "find-hidden-message-with-single-byte-xor.txt"
+    elif len(sys.argv) != 2:
         print(f"Correct format: python {sys.argv[0]} <file_with_ciphertexts>")
         exit()
+        filename = ""
+    else:
+        filename = sys.argv[1]
 
     # Read all lines from the input file
-    filename = sys.argv[1]
     with open(filename, 'r') as file:
         lines = file.readlines()
 
