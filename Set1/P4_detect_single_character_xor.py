@@ -1,6 +1,6 @@
 import string
 import sys
-from single_byte_xor_cipher import score_text  # Import the scoring function
+from P3_single_byte_xor_cipher import score_text  # Import the scoring function
 
 
 # Function to find the best line encrypted with a single-byte XOR cipher

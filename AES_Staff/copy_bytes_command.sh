@@ -1,0 +1,1 @@
+dd if=input.txt of=output.txt bs=1 count=16

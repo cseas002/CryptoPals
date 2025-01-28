@@ -22,7 +22,26 @@ def aes_decrypt_block(block, key):
     return cipher.decrypt(block)
 
 
-def aes_ecb_decrypt(ciphertext, key):
+def aes_encrypt_block(block, key):
+    """
+    Decrypt a single 16-byte block using AES-128.
+    Args:
+    - block (bytes): The 16-byte ciphertext block.
+    - key (bytes): The 16-byte AES key.
+    Returns:
+    - plaintext (bytes): The decrypted 16-byte plaintext block.
+    """
+    if len(block) != 16:
+        raise ValueError("Block size must be exactly 16 bytes.")
+    if len(key) != 16:
+        raise ValueError("Key size must be exactly 16 bytes.")
+
+    # Initialize AES cipher in ECB mode for a single block
+    cipher = AES.new(key, AES.MODE_ECB)
+    return cipher.encrypt(block)
+
+
+def aes_ecb(ciphertext, key, encrypt: bool):
     """
     Decrypt ciphertext in ECB mode manually by processing block-by-block.
     Args:
@@ -35,13 +54,13 @@ def aes_ecb_decrypt(ciphertext, key):
     # Here we don't care about padding, we assume it's a multiple of 16
     for i in range(0, len(ciphertext), 16):
         block = ciphertext[i:i + 16]
-        plaintext += aes_decrypt_block(block, key)
+        plaintext += aes_encrypt_block(block, key) if encrypt else aes_decrypt_block(block, key)
     return plaintext
 
 
 def main():
     if len(sys.argv) == 1:
-        filename = "AES-base64-encrypted-file.txt"
+        filename = "AES-base64-encrypted-file-EBC.txt"
     elif len(sys.argv) != 2:
         print(f"Usage: python {sys.argv[0]} <base64_file>")
         exit()
@@ -60,7 +79,7 @@ def main():
     ciphertext = b64decode(base64_ciphertext)
 
     # Decrypt the ciphertext manually in ECB mode
-    plaintext = aes_ecb_decrypt(ciphertext, key)
+    plaintext = aes_ecb(ciphertext, key, False)
 
     # Print the decrypted plaintext
     print(f"Decrypted Message:\n{plaintext.decode('utf-8', errors='ignore')}")
