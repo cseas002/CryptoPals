@@ -2,6 +2,8 @@ from base64 import b64decode
 from Crypto.Cipher import AES
 import sys
 
+from Set2.P15_PKCS_7_padding_validation import check_padding
+
 
 def aes_decrypt_block(block, key):
     """
@@ -41,7 +43,7 @@ def aes_encrypt_block(block, key):
     return cipher.encrypt(block)
 
 
-def aes_ecb(ciphertext, key, encrypt: bool):
+def aes_ecb(ciphertext, key, encrypt: bool, block_size=16):
     """
     Decrypt ciphertext in ECB mode manually by processing block-by-block.
     Args:
@@ -52,10 +54,31 @@ def aes_ecb(ciphertext, key, encrypt: bool):
     """
     plaintext = b""
     # Here we don't care about padding, we assume it's a multiple of 16
-    for i in range(0, len(ciphertext), 16):
-        block = ciphertext[i:i + 16]
+    for i in range(0, len(ciphertext), block_size):
+        block = ciphertext[i:i + block_size]
         plaintext += aes_encrypt_block(block, key) if encrypt else aes_decrypt_block(block, key)
+        if len(ciphertext) - i < block_size and not encrypt:
+            # Remove padding
+            padding = plaintext[len(plaintext) - 1]
+            if check_padding(plaintext):
+                plaintext = plaintext[0:len(plaintext) - padding]
+
+            # for j in range(padding):
+            #     # Check if it's indeed padding
+            #     if plaintext[len(plaintext) - 1 - j] != padding:
+            #         break
+            #     if j == padding - 1:
+            #         # If it is, remove it
+            #         plaintext = plaintext[0:len(plaintext) - padding]
     return plaintext
+
+
+def aes_ecb_encrypt(ciphertext, key):
+    return aes_ecb(ciphertext, key, True)
+
+
+def aes_ecb_decrypt(ciphertext, key):
+    return aes_ecb(ciphertext, key, False)
 
 
 def main():

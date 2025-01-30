@@ -1,15 +1,17 @@
 import random
-from base64 import b64decode
+# from base64 import b64decode
 from Set1.P7_AES_ECB import aes_ecb
 from P10_AES_CBC import aes_cbc
+from Set2.P9_PKCS_7 import add_padding
 
 
 def generate_random_bytes(length: int):
-    return bytes([random.randint(0, 255) for _ in range(length)])
+    return bytearray([random.randint(0, 255) for _ in range(length)])
 
 
-def encryption_oracle(data: bytes, key_length: int):
-    key = generate_random_bytes(key_length)
+def encryption_oracle(data, key_length: int, key=None):
+    if key is None:
+        key = generate_random_bytes(key_length)
 
     # # Read the base64-encoded ciphertext from the input file
     # with open(input_file_name, "r") as file:
@@ -24,9 +26,7 @@ def encryption_oracle(data: bytes, key_length: int):
     extended_data = bytes_before + data + bytes_after
 
     # I make this extended data divisible by 16 by adding random padding
-    padding_needed = 16 - len(extended_data) % 16
-    padding = generate_random_bytes(padding_needed)
-    extended_data += padding
+    extended_data = add_padding(extended_data, 16)
 
     # Encrypt EBC or CBC randomly (50-50 changes)
     if random.random() < 0.5:
