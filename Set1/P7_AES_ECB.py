@@ -73,8 +73,8 @@ def aes_ecb(ciphertext, key, encrypt: bool, block_size=16):
     return plaintext
 
 
-def aes_ecb_encrypt(ciphertext, key):
-    return aes_ecb(ciphertext, key, True)
+def aes_ecb_encrypt(plaintext, key):
+    return aes_ecb(plaintext, key, True)
 
 
 def aes_ecb_decrypt(ciphertext, key):

@@ -7,7 +7,7 @@ from Set1.P2_Fixed_XOR import xor_byte_sequences
 from Set2.P15_PKCS_7_padding_validation import check_padding
 
 
-def aes_cbc(data: bytes, key: bytes, iv: bytes, encrypt: bool, block_size=16):
+def aes_cbc(data: bytes, key: bytes, iv: bytes, encrypt: bool, block_size=16, check_padding_is_valid=True):
     """
     Encrypt or decrypt data in CBC mode manually by processing block-by-block.
     Args:
@@ -44,10 +44,12 @@ def aes_cbc(data: bytes, key: bytes, iv: bytes, encrypt: bool, block_size=16):
             previous_block = current_block
 
             # If it's the last block, check for padding
-            if i == len(data) - block_size:
+            if i == len(data) - block_size and check_padding_is_valid:
                 # Remove padding
                 padding = plaintext[len(plaintext) - 1]
-                if check_padding(plaintext):
+                padded = check_padding(plaintext)
+
+                if padded:
                     plaintext = plaintext[0:len(plaintext) - padding]
 
     return plaintext
@@ -57,8 +59,8 @@ def aes_cbc_encrypt(data: bytes, key: bytes, iv: bytes):
     return aes_cbc(data, key, iv, True)
 
 
-def aes_cbc_decrypt(data: bytes, key: bytes, iv: bytes):
-    return aes_cbc(data, key, iv, False)
+def aes_cbc_decrypt(data: bytes, key: bytes, iv: bytes, block_size=16, check_padding_is_valid=False):
+    return aes_cbc(data, key, iv, False, block_size, check_padding_is_valid)
 
 
 def main():
