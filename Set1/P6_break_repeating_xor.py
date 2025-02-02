@@ -1,7 +1,6 @@
 import base64
 import sys
-from itertools import combinations
-from P3_single_byte_xor_cipher import score_text, find_best_key_and_plaintext
+from Set1.P3_single_byte_xor_cipher import find_best_key_and_plaintext
 
 
 # Function to generate all unique pairs from a list
