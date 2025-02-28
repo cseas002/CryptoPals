@@ -23,6 +23,7 @@ def profile_for(email: str) -> str:
     """Encodes a user profile, sanitizing the email to prevent injection attacks."""
     email = re.sub(r"[&=]", "", email)  # Remove metacharacters
     profile = f"email={email}&uid=10&role=user"
+    print("Profile for:", profile)
     return profile
 
 
@@ -37,7 +38,7 @@ def encrypt_profile(email: str) -> bytes:
 def decrypt_profile(ciphertext: bytes) -> dict:
     """Decrypts and parses an AES-128-ECB encrypted profile."""
     plaintext = aes_ecb_decrypt(ciphertext, KEY)
-    print(plaintext, "AAAAA")
+    print("Plaintext:", plaintext)
     return parse_kv(plaintext.decode())
 
 
@@ -51,6 +52,7 @@ def create_admin_profile():
     # Step 2: Craft an input where "admin" is perfectly aligned in its own block (2nd)
     crafted_email = "A" * (block_size - len("email=")) + "admin" + '           '
     crafted_ciphertext = encrypt_profile(crafted_email)
+    print("Crafted email:", crafted_email)
 
     # Step 3: Extract the "admin" block
     admin_block_index = block_size  # = (len(crafted_email) - len("admin")) // block_size - 1

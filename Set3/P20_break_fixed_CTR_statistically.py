@@ -29,8 +29,6 @@ def recover_keystream(ciphertexts, block_size=16):
 
     blocks = break_into_blocks(b"".join(truncated_ciphertexts), min_length)  # Create blocks
 
-
-
     # Transpose to analyze keystream reuse
     # (make a block that is the first byte of every block, and a block that is the second byte of every block, and so on.
     transposed_blocks = transpose_blocks(blocks, min_length)

@@ -85,7 +85,7 @@ def decrypt_block(current_block, prev_block, block_size):
 def padding_oracle_attack(ciphertext, iv, block_size=16):
     """Performs a Padding Oracle Attack to recover the plaintext.
 
-    We will start by decrypting the second to last block by changing firstly the last byte
+    We will start by modifying the second to last block by changing firstly the last byte
     We know that valid PKCS#7 padding means the last byte is \x01.
 
     e.g.:

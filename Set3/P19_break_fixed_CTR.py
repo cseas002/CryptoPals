@@ -67,6 +67,8 @@ def xord_ciphertext(ciphertexts, keystream, print_it=False, block_size=16):
 def decrypt_ciphertexts(ciphertexts, block_size=16):
     """
     XORing two ciphertexts cancels out the keystream, leaving plaintext1 XOR plaintext2.
+    (cipher1 = plaintext1 ^ keystream, cipher2 = plaintext2 ^ keystream,
+    (keystream ^ plaintext1 ^ keystream ^ plaintext2 = plaintext1 ^ plaintext2)
     So we will XOR ciphertexts together.
     The result is basically plaintext1 XOR plaintext2. If one of them is whitespace, it means that if we XOR it again
     with whitespace, we will get the other plaintext. We will assume that if it's an ASCII character, we found the
@@ -92,6 +94,7 @@ def decrypt_ciphertexts(ciphertexts, block_size=16):
 
         result.append(xord_ciphertexts)
 
+    # Now result is a list, in which in each index there are all the xord ciphertexts on that ciphertext
 
     # This didn't work for some reason
     # for i in range(0, len(ciphertext) - block_size, block_size):

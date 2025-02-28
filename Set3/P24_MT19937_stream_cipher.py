@@ -48,6 +48,17 @@ def is_mt19937_token(token, time_window=600):
     return False
 
 
+def crack_mt19937_token(token):
+    """Crack an MT19937-generated token by trying all timestamps from the last second."""
+    current_time = int(time.time()) & 0xFFFF  # Get current 16-bit timestamp
+    possible_seeds = [current_time, (current_time - 1) & 0xFFFF]  # Try last second too
+
+    for seed in possible_seeds:
+        if token == mt19937_keystream(seed, 16):
+            return seed  # Found the correct seed
+    return None  # No match found
+
+
 def main():
     # Test encryption/decryption
     seed = random.randint(0, 2 ** 16 - 1)
@@ -65,6 +76,13 @@ def main():
     reset_token = generate_password_reset_token()
     assert is_mt19937_token(reset_token), "Reset token validation failed!"
     print("Password reset token is valid.")
+
+    # Or, using this implementation
+    cracked_seed = crack_mt19937_token(reset_token)
+    if cracked_seed is not None:
+        print(f"Successfully cracked token! Seed was: {cracked_seed}")
+    else:
+        print("Failed to crack token.")
 
 
 if __name__ == '__main__':
